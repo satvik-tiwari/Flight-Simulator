@@ -19,7 +19,9 @@ int main(int argc, char **argv)
 	{ // main()
 	// initialize QT
 	QApplication app(argc, argv);
-
+	
+	for(int i = 0; i < 4; i++)
+	std::cout << argv[i] << std::endl;
 	//	create a window
 	try
 		{ // try block
