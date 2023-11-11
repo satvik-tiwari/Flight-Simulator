@@ -41,12 +41,12 @@ FlightSimulatorWidget::~FlightSimulatorWidget()
 	} // destructor																	
 
 // called when OpenGL context is set up
-void FlightSimulatorWidget::initializeGL()
+void FlightSimulatorWidget::initializeGL() //no need to modify
 	{ // FlightSimulatorWidget::initializeGL()
 	} // FlightSimulatorWidget::initializeGL()
 
 // called every time the widget is resized
-void FlightSimulatorWidget::resizeGL(int w, int h)
+void FlightSimulatorWidget::resizeGL(int w, int h) //no need to modify
 	{ // FlightSimulatorWidget::resizeGL()
 	// reset the viewport
 	glViewport(0, 0, w, h);
@@ -69,7 +69,7 @@ void FlightSimulatorWidget::resizeGL(int w, int h)
 	} // FlightSimulatorWidget::resizeGL()
 	
 // called every time the widget needs painting
-void FlightSimulatorWidget::paintGL()
+void FlightSimulatorWidget::paintGL()  //no need to modify
 	{ // FlightSimulatorWidget::paintGL()
 	// call the scene to render itself
 	theScene->Render();
@@ -186,7 +186,7 @@ void FlightSimulatorWidget::keyPressEvent(QKeyEvent *event)
 	_GL_WIDGET_UPDATE_CALL();
 	} // keyPressEvent()
 
-void FlightSimulatorWidget::nextFrame()
+void FlightSimulatorWidget::nextFrame() //no need to modify
 	{ // nextFrame()
 	// each time this gets called, we will update the plane's position
 	theScene->Update();

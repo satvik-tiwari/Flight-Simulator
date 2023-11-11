@@ -37,6 +37,9 @@ class SceneModel
 	Terrain groundModel;
 	HomogeneousFaceSurface planeModel;
 	HomogeneousFaceSurface lavaBombModel;
+	
+	Cartesian3 eye;
+	Cartesian3
 
 	// a matrix that specifies the mapping from world coordinates to those assumed
 	// by OpenGL
@@ -52,5 +55,10 @@ class SceneModel
 	void Render();
 
 	}; // class SceneModel
+	
+class kglm
+{
+	Matrix4 lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up);
+};
 
 #endif

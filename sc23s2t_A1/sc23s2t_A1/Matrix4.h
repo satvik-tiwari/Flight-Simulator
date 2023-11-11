@@ -93,11 +93,15 @@ class Matrix4
     // the identity matrix
     static Matrix4 Identity();
     static Matrix4 Translate(const Cartesian3 &vector);
+    static Matrix4 Homogeneous2Mat(Homogeneous4 c1,
+    											Homogeneous4 c2, Homogeneous4 c3,
+    											Homogeneous4 c4);
 
     // rotations around main axes
 	static Matrix4 RotateX(float degrees);
     static Matrix4 RotateY(float degrees);
     static Matrix4 RotateZ(float degrees);
+    
     }; // Matrix4
 
 // scalar operations

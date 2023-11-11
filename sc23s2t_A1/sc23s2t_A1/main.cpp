@@ -18,10 +18,12 @@
 int main(int argc, char **argv)
 	{ // main()
 	// initialize QT
+	//for(int i = 0; i < 4; i++)
+	//std::cout << argv[i] << std::endl;
+	
 	QApplication app(argc, argv);
 	
-	for(int i = 0; i < 4; i++)
-	std::cout << argv[i] << std::endl;
+	
 	//	create a window
 	try
 		{ // try block
@@ -39,12 +41,14 @@ int main(int argc, char **argv)
 
 		// set QT running
 		return app.exec();
+		
+		
 		} // try block
 	catch (std::string errorString)
 		{ // catch block
 		std::cout << "Unable to run application." << errorString << std::endl;
 		} // catch block
-
+	
 	// paranoid return value
 	exit(0);
 	} // main()

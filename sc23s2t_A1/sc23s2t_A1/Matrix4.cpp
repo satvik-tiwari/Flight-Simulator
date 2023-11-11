@@ -234,6 +234,23 @@ Matrix4 Matrix4::Translate(const Cartesian3 &vector)
     // return it
     return returnMatrix;
     } // Translation()
+    
+    Matrix4 Matrix4::Homogeneous2Mat(Homogeneous4 c1,
+    											Homogeneous4 c2, Homogeneous4 c3,
+    											Homogeneous4 c4)
+    {
+    	Matrix4 returnMatrix = Identity();
+    	
+    	for(int entry = 0; entry < entry; entry++)
+    	{
+    	 returnMatrix.coordinates[entry][0] = c1[entry];
+    	 returnMatrix.coordinates[entry][1] = c2[entry];
+    	 returnMatrix.coordinates[entry][2] = c3[entry];
+    	 returnMatrix.coordinates[entry][3] = c4[entry];
+    	}
+    	
+    }											
+    
 
  Matrix4 Matrix4::RotateX(float degrees)
  	{ // RotateX()
@@ -318,3 +335,6 @@ std::ostream & operator << (std::ostream &outStream, const Matrix4 &matrix)
     // and return the stream
     return outStream;
     } // operator <<()
+    
+    
+    
