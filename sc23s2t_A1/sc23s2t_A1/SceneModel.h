@@ -39,11 +39,23 @@ class SceneModel
 	HomogeneousFaceSurface lavaBombModel;
 	
 	Cartesian3 eye;
-	Cartesian3
+	
 
 	// a matrix that specifies the mapping from world coordinates to those assumed
 	// by OpenGL
 	Matrix4 world2OpenGLMatrix;
+	
+	Matrix4 camPos;
+	Matrix4 viewMatrix;
+	Matrix4 modelMatrix;
+	Matrix4 modelView;
+	
+	Matrix4 translation;
+	Matrix4 rotation;
+	Matrix4 scale;
+		
+	float s = 0.0f;
+	float r = 0.0f;
 	
 	// constructor
 	SceneModel();

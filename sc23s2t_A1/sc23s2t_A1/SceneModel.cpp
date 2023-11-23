@@ -55,50 +55,50 @@ SceneModel::SceneModel()
 
 	// set the world to opengl matrix
 	world2OpenGLMatrix = Matrix4::RotateX(90.0);
+	camPos = Matrix4::Identity();
+	viewMatrix = camPos.transpose();
+	
+	translation = Matrix4::Translate(Cartesian3(0.0f, 0.0f, 0.0f));
+	rotation = Matrix4::Identity();
+	scale = Matrix4::Identity();
+	modelView = Matrix4::Identity();
+	
 
 	} // constructor
 
 
-	
-	Matrix4 kglm::lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up)
-	{
-	 Cartesian3 zaxis = (at - eye).unit();
-	 Cartesian3 xaxis = (zaxis.cross(up)).unit();
-	 Cartesian3 yaxis = xaxis.cross(zaxis);
-	 
-	 -zaxis; 
-	 
-	 //std::ofstream destination;
-	 //destination.open("Dump.txt");
-	 //destination << "Homogenesous coords \n" 
-	 //						<< Homogeneous4(xaxis.x, xaxis.y, xaxis.z, -xaxis.dot(eye));
-		//std::cout << "Homogeneouss coords " << Homogeneous4(xaxis.x, xaxis.y, xaxis.z, -xaxis.dot(eye));
-  Matrix4 viewMatrix;
-  viewMatrix.Identity();
-  
-	
-	
-	
-	//writing all the blocks one by one to .face file
-		
-  Homogeneous4 h0 = Homogeneous4(xaxis.x, xaxis.y, xaxis.z, -xaxis.dot(eye));
-  
-  Homogeneous4 h1 = Homogeneous4(yaxis.x, yaxis.y, yaxis.z, -yaxis.dot(eye));
-  
-  Homogeneous4 h2 = Homogeneous4(zaxis.x, zaxis.y, zaxis.z, -zaxis.dot(eye));
-  
-  Homogeneous4 h3 = Homogeneous4(0, 0, 0, 1);
-  
-  
-	viewMatrix = Matrix4::Homogeneous2Mat(h0, h1, h2, h3);
-  return viewMatrix;
-	  
-	}
 
 // routine that updates the scene for the next frame
 void SceneModel::Update()
 	{ // Update()
+			
+		//create view matrix
+		s += 100.0f;
+		r+= 0.1f;
+		//Matrix4 viewMatrix;
+		viewMatrix = camPos.transpose();
+		
+		//model matrix = translation * rotation * scale
+		
+		translation = Matrix4::Translate(Cartesian3(0.0f, s, 0.0f));
+		rotation = Matrix4::RotateY(r);
+		scale = Matrix4::Identity();
+		//modelMatrix = translation * rotation * scale;
+				modelMatrix = scale * rotation * translation;
+		modelView = viewMatrix * modelMatrix;
+		//groundModel.Render(world2OpenGLMatrix);
+		//Matrix4 m = modelView * world2OpenGLMatrix;
+		//planeModel.Render(m);
+		
+		camPos = viewMatrix;
+	//	world2OpenGLMatrix = Matrix4::RotateY(s);
 	
+		
+		//world2OpenGLMatrix = Matrix4::RotateX(90.0);
+		//groundModel.Render(world2OpenGLMatrix);
+		
+		
+		std::cout << "modelView:\n" << modelView << "\n" << std::endl;
 		
 	} // Update()
 
@@ -138,6 +138,44 @@ void SceneModel::Render()
 
 	// actual render code goes here
 	groundModel.Render(world2OpenGLMatrix);
+	planeModel.Render(modelView);
 
 	} // Render()	
 	
+	
+		
+/*	Matrix4 kglm::lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up)
+	{
+	 Cartesian3 zaxis = (at - eye).unit();
+	 Cartesian3 xaxis = (zaxis.cross(up)).unit();
+	 Cartesian3 yaxis = xaxis.cross(zaxis);
+	 
+	 -zaxis; 
+	 
+	 //std::ofstream destination;
+	 //destination.open("Dump.txt");
+	 //destination << "Homogenesous coords \n" 
+	 //						<< Homogeneous4(xaxis.x, xaxis.y, xaxis.z, -xaxis.dot(eye));
+		//std::cout << "Homogeneouss coords " << Homogeneous4(xaxis.x, xaxis.y, xaxis.z, -xaxis.dot(eye));
+  Matrix4 viewMatrix;
+  viewMatrix.Identity();
+  
+	
+	
+	
+	//writing all the blocks one by one to .face file
+		
+  Homogeneous4 h0 = Homogeneous4(xaxis.x, xaxis.y, xaxis.z, -xaxis.dot(eye));
+  
+  Homogeneous4 h1 = Homogeneous4(yaxis.x, yaxis.y, yaxis.z, -yaxis.dot(eye));
+  
+  Homogeneous4 h2 = Homogeneous4(zaxis.x, zaxis.y, zaxis.z, -zaxis.dot(eye));
+  
+  Homogeneous4 h3 = Homogeneous4(0, 0, 0, 1);
+  
+  
+	viewMatrix = Matrix4::Homogeneous2Mat(h0, h1, h2, h3);
+  return viewMatrix;
+	  
+	}
+*/
