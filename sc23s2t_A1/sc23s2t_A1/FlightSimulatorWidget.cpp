@@ -119,52 +119,53 @@ void FlightSimulatorWidget::keyPressEvent(QKeyEvent *event)
 	  				
 	  case Qt::Key_0:
 	   //set speed 0
+	   theScene->SetSpeed(0.0f);
 	   
 	   	break;
 	   	
 	  case Qt::Key_1:
 	   //set speed 1
-	   
+	   theScene->SetSpeed(1.0f);
 	   	break;	 
 
 	  case Qt::Key_2:
 	   //set speed 0
-	   
+	   theScene->SetSpeed(2.0f);
 	   	break;
 	   	
 	  case Qt::Key_3:
 	   //set speed 3
-	   
+	   theScene->SetSpeed(3.0f);
 	   	break;	   	
 
 	  case Qt::Key_4:
 	   //set speed 4
-	   
+	   theScene->SetSpeed(4.0f);
 	   	break;
 	   	
 	  case Qt::Key_5:
 	   //set speed 5
-	   
+	   theScene->SetSpeed(5.0f);
 	   	break;	   	
 
 	  case Qt::Key_6:
 	   //set speed 6
-	   
+	   theScene->SetSpeed(6.0f);
 	   	break;
 	   	
 	  case Qt::Key_7:
 	   //set speed 7
-	   
+	   theScene->SetSpeed(7.0f);
 	   	break;	   	
 
 	  case Qt::Key_8:
 	   //set speed 8
-	   
+	   theScene->SetSpeed(8.0f);
 	   	break;
 	   	
 	  case Qt::Key_9:
 	   //set speed 9
-	   
+	   theScene->SetSpeed(9.0f);
 	    break;
 	   
 	  /*case Qt::Key_-:

@@ -65,44 +65,22 @@ SceneModel::SceneModel(float x, float y, float z) : initial_x(x), initial_y(y), 
 	modelView = Matrix4::Identity();
 	viewMatrix = Matrix4::Identity();
 	
-std::cout << "asfadsfasfaefasefa   " << initial_x <<std::endl;
+	speed = 0.0f;
+	speed_increment_factor = 0.0f;
+	
+//std::cout << "asfadsfasfaefasefa   " << initial_x <<std::endl;
 	} // constructor
 
 
+void SceneModel::SetSpeed(float s)
+{
+ 
+ speed_increment_factor = s;
+}
+
 Matrix4 SceneModel::lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up)
 	{
-	 /*Cartesian3 zaxis = (at - eye).unit();
-	 Cartesian3 xaxis = (zaxis.cross(up)).unit();
-	 //std::cout << "check";
-	 //std::cout << "FSDFS " <<xaxis << std::endl;
-	 std::cout << "fase" << std::endl;
 	 
-	 Cartesian3 yaxis = xaxis.cross(zaxis);
-	 std::cout << yaxis << std::endl;
-	 std::cout << "check"; 
-	 zaxis = -zaxis; 
-	 std::cout << "z " << zaxis << std::endl;
-	 //std::ofstream destination;
-	 //destination.open("Dump.txt");
-	 //destination << "Homogenesous coords \n" 
-	 //						<< Homogeneous4(xaxis.x, xaxis.y, xaxis.z, -xaxis.dot(eye));
-		//std::cout << "Homogeneouss coords " << Homogeneous4(xaxis.x, xaxis.y, xaxis.z, -xaxis.dot(eye));
-  Matrix4 view;
-  view = Matrix4::Identity();
-  
-	std::cout << view << std::endl;
-	
-	
-	
-		
-  Homogeneous4 h0 = Homogeneous4(xaxis.x, xaxis.y, xaxis.z, -xaxis.dot(eye));
-  
-  Homogeneous4 h1 = Homogeneous4(yaxis.x, yaxis.y, yaxis.z, -yaxis.dot(eye));
-  
-  Homogeneous4 h2 = Homogeneous4(zaxis.x, zaxis.y, zaxis.z, -zaxis.dot(eye));
-  
-  Homogeneous4 h3 = Homogeneous4(0, 0, 0, 1);
-  */
   
   Cartesian3 forward = (at - eye).unit();
   
@@ -119,14 +97,6 @@ Matrix4 SceneModel::lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up)
   Homogeneous4 h3 = Homogeneous4(0, 0, 0, 1);
   
   
-  /*Homogeneous4 h0 = Homogeneous4(right.x, right.y, right.z, -right.dot(eye));
-  
-  Homogeneous4 h1 = Homogeneous4(up.x, up.y, up.z, -up.dot(eye));
-  
-  Homogeneous4 h2 = Homogeneous4(forward.x, forward.y, forward.z, -right.dot(eye));
-  
-  Homogeneous4 h3 = Homogeneous4(0, 0, 0, 1);*/
-  
   Matrix4 view;
   view = Matrix4::Identity();
 	view = Matrix4::Homogeneous2Mat(h0, h1, h2, h3);
@@ -141,12 +111,12 @@ Matrix4 SceneModel::lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up)
 void SceneModel::Update()
 	{ // Update()
 			
-		std::cout << "asfadsfasfaefasefa   " << initial_x <<std::endl;
-		s += 1.0f;
+		//std::cout << "asfadsfasfaefasefa   " << initial_x <<std::endl;
+		speed = speed + speed_increment_factor;
 		
 		//create model matrix
 		// model matrix = translation x rotation x scale
-		translation = Matrix4::Translate(Cartesian3(initial_x, initial_y, initial_z + s));
+		translation = Matrix4::Translate(Cartesian3(initial_x, initial_y, initial_z + speed));
 				//translation = Matrix4::Translate(Cartesian3(0.0f, 0.0f, s));
 		//translation = Matrix4::Translate(Cartesian3(0.0f, -s, 0.0f));  R
 		rotation = Matrix4::Identity();

@@ -36,14 +36,16 @@ class SceneModel
 	// we'll have three geometric surfaces: one for the ground (and volcano)
 	// one for the plane 
 	// and one for the lava bomb(s)
-	float initial_x, initial_y, initial_z;
+	
 	
 	
 	Terrain groundModel;
 	HomogeneousFaceSurface planeModel;
 	HomogeneousFaceSurface lavaBombModel;
 	
-	//Cartesian3 eye;
+	
+	//iniital position of plane
+	float initial_x, initial_y, initial_z;
 	
 
 	// a matrix that specifies the mapping from world coordinates to those assumed
@@ -59,7 +61,8 @@ class SceneModel
 	Matrix4 rotation;
 	Matrix4 scale;
 		
-	float s = 0.0f;
+	float speed;
+	float speed_increment_factor;
 	//float r = 0.0f;
 	
 	// constructor
@@ -70,6 +73,8 @@ class SceneModel
 
 	// routine to tell the scene to render itself
 	void Render();
+	
+	void SetSpeed(float s);
 	
 	Matrix4 lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up);
 
