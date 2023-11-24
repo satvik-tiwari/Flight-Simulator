@@ -32,7 +32,7 @@ const GLfloat lavaBombRadius = 100.0;
 const Cartesian3 chaseCamVector(0.0, -2.0, 0.5);
 
 // constructor
-SceneModel::SceneModel()
+SceneModel::SceneModel(float x, float y, float z) : initial_x(x), initial_y(y), initial_z(z)
 	{ // constructor
 	// this is not the best place to put this in general, but this is a quick and dirty hack
 	// we start by loading three files: one for each model
@@ -59,13 +59,13 @@ SceneModel::SceneModel()
 	//camPos = Matrix4::Identity();
 	//viewMatrix = camPos.transpose();
 	
-	translation = Matrix4::Translate(Cartesian3(0.0f, 0.0f, 0.0f));
+	translation = Matrix4::Translate(Cartesian3(initial_x, initial_y, initial_z));
 	rotation = Matrix4::Identity();
 	scale = Matrix4::Identity();
 	modelView = Matrix4::Identity();
 	viewMatrix = Matrix4::Identity();
 	
-
+std::cout << "asfadsfasfaefasefa   " << initial_x <<std::endl;
 	} // constructor
 
 
@@ -141,13 +141,13 @@ Matrix4 SceneModel::lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up)
 void SceneModel::Update()
 	{ // Update()
 			
-		
+		std::cout << "asfadsfasfaefasefa   " << initial_x <<std::endl;
 		s += 1.0f;
 		
 		//create model matrix
 		// model matrix = translation x rotation x scale
-		
-		translation = Matrix4::Translate(Cartesian3(0.0f, 0.0f, s));
+		translation = Matrix4::Translate(Cartesian3(initial_x, initial_y, initial_z + s));
+				//translation = Matrix4::Translate(Cartesian3(0.0f, 0.0f, s));
 		//translation = Matrix4::Translate(Cartesian3(0.0f, -s, 0.0f));  R
 		rotation = Matrix4::Identity();
 		rotation = Matrix4::RotateX(-90.0);
@@ -220,8 +220,8 @@ void SceneModel::Render()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// compute the light position
-  	//Homogeneous4 lightDirection = world2OpenGLMatrix * sunDirection;
-  	Homogeneous4 lightDirection = modelView * sunDirection;
+  	Homogeneous4 lightDirection = world2OpenGLMatrix * sunDirection;
+  	//Homogeneous4 lightDirection = modelView * sunDirection;
 	// and set the w to zero to force infinite distance
  	lightDirection.w = 0.0;
  	 	
@@ -238,9 +238,16 @@ void SceneModel::Render()
 	//groundModel.Render(m);
 	//Matrix4 m1 =  modelView * world2OpenGLMatrix;
 	groundModel.Render(modelView);
-	Matrix4 p = Matrix4::Translate(Cartesian3(0.0f, -1.0f, -3.4f)) * world2OpenGLMatrix;
+	Matrix4 p = Matrix4::Translate(Cartesian3(0.0f, -2.9f, -4.0f));
+	Matrix4 rot = Matrix4::Identity();
+	rot = Matrix4::RotateX(100.0);
 	
-	planeModel.Render(p);
+	Matrix4 mod_pla = p * rot;
+	
+	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, planeColour);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, blackColour);
+	glMaterialfv(GL_FRONT, GL_EMISSION, blackColour);
+	planeModel.Render(mod_pla);
 	
 
 	} // Render()	

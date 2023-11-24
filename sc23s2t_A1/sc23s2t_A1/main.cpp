@@ -14,6 +14,7 @@
 #include "SceneModel.h"
 #include <iostream>
 #include <string>
+#include <cstdlib>
 
 int main(int argc, char **argv)
 	{ // main()
@@ -28,7 +29,7 @@ int main(int argc, char **argv)
 	try
 		{ // try block
 		// we want a single instance of the scene model
-		SceneModel theScene;
+		SceneModel theScene(std::atof(argv[1]), std::atof(argv[2]), std::atof(argv[3]));
 		
 		// create the widget with no parent
 		FlightSimulatorWidget flightWindow(NULL, &theScene);

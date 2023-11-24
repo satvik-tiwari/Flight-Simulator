@@ -28,12 +28,17 @@
 
 #include "Random.h"
 
+
+
 class SceneModel										
 	{ // class SceneModel
 	public:	
 	// we'll have three geometric surfaces: one for the ground (and volcano)
 	// one for the plane 
 	// and one for the lava bomb(s)
+	float initial_x, initial_y, initial_z;
+	
+	
 	Terrain groundModel;
 	HomogeneousFaceSurface planeModel;
 	HomogeneousFaceSurface lavaBombModel;
@@ -58,7 +63,7 @@ class SceneModel
 	//float r = 0.0f;
 	
 	// constructor
-	SceneModel();
+	SceneModel(float x, float y, float z);
 
 	// routine that updates the scene for the next frame
 	void Update();
