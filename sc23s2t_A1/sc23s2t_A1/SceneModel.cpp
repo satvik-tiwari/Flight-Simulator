@@ -40,6 +40,7 @@ SceneModel::SceneModel()
 	planeModel.ReadFileTriangleSoup(planeModelName);
 	lavaBombModel.ReadFileTriangleSoup(lavaBombModelName);
 	
+	
 //	When modelling, z is commonly used for "vertical" with x-y used for "horizontal"
 //	When rendering, the default is that we render using screen coordinates, so x is to the right,
 //	y is up, and z points behind us by the right hand rule.  That means when looking into the screen,
@@ -47,7 +48,7 @@ SceneModel::SceneModel()
 //	That means we will have to start off with a view matrix that compensates for this
 //	Assume that we want to look out along the y axis with the z axis pointing up instead
 //	Then the x-axis is off to the right.  This means that our mapping is as follows:
-//		x is unchanged	from WCS					to VCS
+//		x is unchanged	from WCS to VCS
 //		y was forward 	in WCS		is now up		in VCS
 //  	z was up		in WCS		is now back		in VCS
 //	because x is unchanged, this is a rotation around x, with y moving towards z, so it is a
@@ -78,7 +79,7 @@ Matrix4 SceneModel::lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up)
 	 
 	 Cartesian3 yaxis = xaxis.cross(zaxis);
 	 std::cout << yaxis << std::endl;
-	std::cout << "check"; 
+	 std::cout << "check"; 
 	 zaxis = -zaxis; 
 	 std::cout << "z " << zaxis << std::endl;
 	 //std::ofstream destination;
@@ -117,6 +118,8 @@ Matrix4 SceneModel::lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up)
   Matrix4 view;
   view = Matrix4::Identity();
 	view = Matrix4::Homogeneous2Mat(h0, h1, h2, h3);
+	
+	
   return view;
 	  
 	}
@@ -133,6 +136,7 @@ void SceneModel::Update()
 		// model matrix = translation x rotation x scale
 		
 		translation = Matrix4::Translate(Cartesian3(0.0f, 0.0f, s));
+		//translation = Matrix4::Translate(Cartesian3(0.0f, -s, 0.0f));  R
 		rotation = Matrix4::Identity();
 		scale = Matrix4::Identity();
 		
@@ -212,9 +216,11 @@ void SceneModel::Render()
 	glMaterialfv(GL_FRONT, GL_EMISSION, blackColour);
 
 	// actual render code goes here
-	
-	groundModel.Render(world2OpenGLMatrix);
-	planeModel.Render(modelView);
+	Matrix4 m = world2OpenGLMatrix * modelMatrix;
+	//groundModel.Render(m);
+	//Matrix4 m1 = world2OpenGLMatrix * modelView;
+	groundModel.Render(modelView);
+	//planeModel.Render(modelView);
 	
 
 	} // Render()	
