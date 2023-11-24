@@ -108,6 +108,8 @@ Matrix4 SceneModel::lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up)
   
   Cartesian3 right = (forward.cross(up)).unit();
   
+  //std::cout << "Right   " << right << std::endl;
+  
   Homogeneous4 h0 = Homogeneous4(right.x, right.y, right.z, -eye.x);
   
   Homogeneous4 h1 = Homogeneous4(up.x, up.y, up.z, -eye.y);
@@ -115,6 +117,16 @@ Matrix4 SceneModel::lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up)
   Homogeneous4 h2 = Homogeneous4(forward.x, forward.y, forward.z, -eye.z);
   
   Homogeneous4 h3 = Homogeneous4(0, 0, 0, 1);
+  
+  
+  /*Homogeneous4 h0 = Homogeneous4(right.x, right.y, right.z, -right.dot(eye));
+  
+  Homogeneous4 h1 = Homogeneous4(up.x, up.y, up.z, -up.dot(eye));
+  
+  Homogeneous4 h2 = Homogeneous4(forward.x, forward.y, forward.z, -right.dot(eye));
+  
+  Homogeneous4 h3 = Homogeneous4(0, 0, 0, 1);*/
+  
   Matrix4 view;
   view = Matrix4::Identity();
 	view = Matrix4::Homogeneous2Mat(h0, h1, h2, h3);
@@ -138,13 +150,18 @@ void SceneModel::Update()
 		translation = Matrix4::Translate(Cartesian3(0.0f, 0.0f, s));
 		//translation = Matrix4::Translate(Cartesian3(0.0f, -s, 0.0f));  R
 		rotation = Matrix4::Identity();
+		rotation = Matrix4::RotateX(-90.0);
 		scale = Matrix4::Identity();
+		
+	//	rotation = rotation * world2OpenGLMatrix;
 		
 		modelMatrix = translation * rotation * scale;
 		
-		//kglm::lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up)
 		
-		Cartesian3 eye(0.0f, 0.0f, 0.0f);
+		//kglm::lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up)
+		std::cout << "Model : \n" << modelMatrix << "\n" << std::endl;
+		
+		Cartesian3 eye(0.0f, 0.0f, 0.0f); //-1, 0 , 0.5
 		Cartesian3 at(0.0f, 0.0f, -1.0f);
 		Cartesian3 up(0.0f, 1.0f, 0.0f);
 		viewMatrix = lookAt(eye, at, up);
@@ -203,7 +220,8 @@ void SceneModel::Render()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// compute the light position
-  	Homogeneous4 lightDirection = world2OpenGLMatrix * sunDirection;
+  	//Homogeneous4 lightDirection = world2OpenGLMatrix * sunDirection;
+  	Homogeneous4 lightDirection = modelView * sunDirection;
 	// and set the w to zero to force infinite distance
  	lightDirection.w = 0.0;
  	 	
@@ -218,9 +236,11 @@ void SceneModel::Render()
 	// actual render code goes here
 	Matrix4 m = world2OpenGLMatrix * modelMatrix;
 	//groundModel.Render(m);
-	//Matrix4 m1 = world2OpenGLMatrix * modelView;
+	//Matrix4 m1 =  modelView * world2OpenGLMatrix;
 	groundModel.Render(modelView);
-	//planeModel.Render(modelView);
+	Matrix4 p = Matrix4::Translate(Cartesian3(0.0f, -1.0f, -3.4f)) * world2OpenGLMatrix;
+	
+	planeModel.Render(p);
 	
 
 	} // Render()	
