@@ -55,42 +55,117 @@ SceneModel::SceneModel()
 
 	// set the world to opengl matrix
 	world2OpenGLMatrix = Matrix4::RotateX(90.0);
-	camPos = Matrix4::Identity();
-	viewMatrix = camPos.transpose();
+	//camPos = Matrix4::Identity();
+	//viewMatrix = camPos.transpose();
 	
 	translation = Matrix4::Translate(Cartesian3(0.0f, 0.0f, 0.0f));
 	rotation = Matrix4::Identity();
 	scale = Matrix4::Identity();
 	modelView = Matrix4::Identity();
+	viewMatrix = Matrix4::Identity();
 	
 
 	} // constructor
 
 
-
+Matrix4 SceneModel::lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up)
+	{
+	 /*Cartesian3 zaxis = (at - eye).unit();
+	 Cartesian3 xaxis = (zaxis.cross(up)).unit();
+	 //std::cout << "check";
+	 //std::cout << "FSDFS " <<xaxis << std::endl;
+	 std::cout << "fase" << std::endl;
+	 
+	 Cartesian3 yaxis = xaxis.cross(zaxis);
+	 std::cout << yaxis << std::endl;
+	std::cout << "check"; 
+	 zaxis = -zaxis; 
+	 std::cout << "z " << zaxis << std::endl;
+	 //std::ofstream destination;
+	 //destination.open("Dump.txt");
+	 //destination << "Homogenesous coords \n" 
+	 //						<< Homogeneous4(xaxis.x, xaxis.y, xaxis.z, -xaxis.dot(eye));
+		//std::cout << "Homogeneouss coords " << Homogeneous4(xaxis.x, xaxis.y, xaxis.z, -xaxis.dot(eye));
+  Matrix4 view;
+  view = Matrix4::Identity();
+  
+	std::cout << view << std::endl;
+	
+	
+	
+		
+  Homogeneous4 h0 = Homogeneous4(xaxis.x, xaxis.y, xaxis.z, -xaxis.dot(eye));
+  
+  Homogeneous4 h1 = Homogeneous4(yaxis.x, yaxis.y, yaxis.z, -yaxis.dot(eye));
+  
+  Homogeneous4 h2 = Homogeneous4(zaxis.x, zaxis.y, zaxis.z, -zaxis.dot(eye));
+  
+  Homogeneous4 h3 = Homogeneous4(0, 0, 0, 1);
+  */
+  
+  Cartesian3 forward = (at - eye).unit();
+  
+  Cartesian3 right = (forward.cross(up)).unit();
+  
+  Homogeneous4 h0 = Homogeneous4(right.x, right.y, right.z, -eye.x);
+  
+  Homogeneous4 h1 = Homogeneous4(up.x, up.y, up.z, -eye.y);
+  
+  Homogeneous4 h2 = Homogeneous4(forward.x, forward.y, forward.z, -eye.z);
+  
+  Homogeneous4 h3 = Homogeneous4(0, 0, 0, 1);
+  Matrix4 view;
+  view = Matrix4::Identity();
+	view = Matrix4::Homogeneous2Mat(h0, h1, h2, h3);
+  return view;
+	  
+	}
+	
+	
 // routine that updates the scene for the next frame
 void SceneModel::Update()
 	{ // Update()
 			
-		//create view matrix
-		s += 100.0f;
-		r+= 0.1f;
-		//Matrix4 viewMatrix;
-		viewMatrix = camPos.transpose();
 		
+		s += 1.0f;
+		
+		//create model matrix
+		// model matrix = translation x rotation x scale
+		
+		translation = Matrix4::Translate(Cartesian3(0.0f, 0.0f, s));
+		rotation = Matrix4::Identity();
+		scale = Matrix4::Identity();
+		
+		modelMatrix = translation * rotation * scale;
+		
+		//kglm::lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up)
+		
+		Cartesian3 eye(0.0f, 0.0f, 0.0f);
+		Cartesian3 at(0.0f, 0.0f, -1.0f);
+		Cartesian3 up(0.0f, 1.0f, 0.0f);
+		viewMatrix = lookAt(eye, at, up);
+		
+		std::cout << "View : \n" << viewMatrix << "\n" << std::endl;
+		modelView = modelMatrix * viewMatrix;
+		
+		//r+= 0.1f;
+		//Matrix4 viewMatrix;
+		//viewMatrix = camPos.transpose();
+		//viewMatrix = camPos;
 		//model matrix = translation * rotation * scale
 		
-		translation = Matrix4::Translate(Cartesian3(0.0f, s, 0.0f));
-		rotation = Matrix4::RotateY(r);
-		scale = Matrix4::Identity();
+	//	translation = Matrix4::Translate(Cartesian3(0.0f, 0.0f, s));
+	//	rotation = Matrix4::RotateY(r);
+		//scale = Matrix4::Identity();
 		//modelMatrix = translation * rotation * scale;
-				modelMatrix = scale * rotation * translation;
-		modelView = viewMatrix * modelMatrix;
+		//modelMatrix = scale * rotation * translation;
+		//modelView = viewMatrix * modelMatrix;
 		//groundModel.Render(world2OpenGLMatrix);
 		//Matrix4 m = modelView * world2OpenGLMatrix;
 		//planeModel.Render(m);
+		//viewMatrix = modelMatrix.transpose();
 		
-		camPos = viewMatrix;
+	//	camPos = modelMatrix;
 	//	world2OpenGLMatrix = Matrix4::RotateY(s);
 	
 		
@@ -137,14 +212,16 @@ void SceneModel::Render()
 	glMaterialfv(GL_FRONT, GL_EMISSION, blackColour);
 
 	// actual render code goes here
+	
 	groundModel.Render(world2OpenGLMatrix);
 	planeModel.Render(modelView);
+	
 
 	} // Render()	
 	
 	
 		
-/*	Matrix4 kglm::lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up)
+	/*Matrix4 kglm::lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up)
 	{
 	 Cartesian3 zaxis = (at - eye).unit();
 	 Cartesian3 xaxis = (zaxis.cross(up)).unit();
@@ -177,5 +254,5 @@ void SceneModel::Render()
 	viewMatrix = Matrix4::Homogeneous2Mat(h0, h1, h2, h3);
   return viewMatrix;
 	  
-	}
-*/
+	}*/
+

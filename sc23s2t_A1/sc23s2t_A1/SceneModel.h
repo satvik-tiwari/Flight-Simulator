@@ -38,14 +38,14 @@ class SceneModel
 	HomogeneousFaceSurface planeModel;
 	HomogeneousFaceSurface lavaBombModel;
 	
-	Cartesian3 eye;
+	//Cartesian3 eye;
 	
 
 	// a matrix that specifies the mapping from world coordinates to those assumed
 	// by OpenGL
 	Matrix4 world2OpenGLMatrix;
 	
-	Matrix4 camPos;
+	//Matrix4 camPos;
 	Matrix4 viewMatrix;
 	Matrix4 modelMatrix;
 	Matrix4 modelView;
@@ -55,7 +55,7 @@ class SceneModel
 	Matrix4 scale;
 		
 	float s = 0.0f;
-	float r = 0.0f;
+	//float r = 0.0f;
 	
 	// constructor
 	SceneModel();
@@ -65,12 +65,15 @@ class SceneModel
 
 	// routine to tell the scene to render itself
 	void Render();
+	
+	Matrix4 lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up);
 
 	}; // class SceneModel
-	
+/*	
 class kglm
 {
-	Matrix4 lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up);
+	public:
+	static Matrix4 lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up);
 };
-
+*/
 #endif

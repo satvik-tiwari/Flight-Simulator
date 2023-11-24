@@ -241,7 +241,7 @@ Matrix4 Matrix4::Translate(const Cartesian3 &vector)
     {
     	Matrix4 returnMatrix = Identity();
     	
-    	for(int entry = 0; entry < entry; entry++)
+    	for(int entry = 0; entry < 4; entry++)
     	{
     	 returnMatrix.coordinates[entry][0] = c1[entry];
     	 returnMatrix.coordinates[entry][1] = c2[entry];
@@ -249,6 +249,7 @@ Matrix4 Matrix4::Translate(const Cartesian3 &vector)
     	 returnMatrix.coordinates[entry][3] = c4[entry];
     	}
     	
+    	return returnMatrix;
     }											
     
 
