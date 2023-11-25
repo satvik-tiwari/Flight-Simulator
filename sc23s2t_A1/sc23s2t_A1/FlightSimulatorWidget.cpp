@@ -89,36 +89,36 @@ void FlightSimulatorWidget::keyPressEvent(QKeyEvent *event)
 			
     case Qt::Key_W:
     theScene->Yaw(false);
-	  //yaw
+	  //yaw left
 	  
 	  	break;
 	  	
 	  case Qt::Key_D:
 	  theScene->Yaw(true);
-	  //yaw
+	  //yaw right
 	  
 	  	break;
 	  	
 	  case Qt::Key_A:
-	  //pitch
+	  //pitch up
 	  theScene->Pitch(false);
 			break;
 			
 	  case Qt::Key_S:
 	  theScene->Pitch(true);
-	  //pitch
+	  //pitch down
 	  
 	  	break;
 	  	
 	  case Qt::Key_Q:
 	  theScene->Roll(false);
-	  //roll
+	  //roll left
 	  	
 	  	break;
 	  	
 	  case Qt::Key_E:
 	  theScene->Roll(true);
-	  //roll
+	  //roll right
 	  
 	  	break;
 	  				
@@ -173,16 +173,16 @@ void FlightSimulatorWidget::keyPressEvent(QKeyEvent *event)
 	   theScene->SetSpeed(9.0f);
 	    break;
 	   
-	  /*case Qt::Key_-:
-	   //decreasing spee
-	   
-	   	break;
+	  case Qt::Key_Minus:
+	   //decreasing speed by 1 m/s
+	   theScene->DecreaseSpeed();
+	   	   	break;
 	   	
-	  case Qt::Key_+:
-	   //increase speed
-	   
-	   	break;	   		   	
-	  */ 	  	
+	  case Qt::Key_Plus:
+	   //increase speed by 1 m/s
+	   theScene->IncreaseSpeed();
+	   	   break;	   		   	
+	  	  	
 	   	
 		default:
 			break;

@@ -66,18 +66,35 @@ SceneModel::SceneModel(float x, float y, float z) : initial_x(x), initial_y(y), 
 	viewMatrix = Matrix4::Identity();
 	
 	speed = 0.0f;
-	speed_increment_factor = 0.0f;
+	distance = 0.0f;
 	
 	yaw = pitch = roll = 0.0f;
 	
 //std::cout << "asfadsfasfaefasefa   " << initial_x <<std::endl;
 	} // constructor
 
-
+//sets the speed value to s
 void SceneModel::SetSpeed(float s)
 {
  
- speed_increment_factor = s;
+ speed = s;
+}
+
+//increase speed by 1
+void SceneModel::IncreaseSpeed()
+{
+	speed++;
+	if(speed > 9.0f)
+		speed = 9.0f;
+}
+
+//decrese speed by 1
+void SceneModel::DecreaseSpeed()
+{
+  speed--;
+  
+  if(speed < 0.0f)
+  	speed = 0.0f;
 }
 
 //increment/decrement roll angle
@@ -146,11 +163,11 @@ void SceneModel::Update()
 	{ // Update()
 			
 		//std::cout << "asfadsfasfaefasefa   " << initial_x <<std::endl;
-		speed = speed + speed_increment_factor;
+		distance = distance + speed;
 	
 		//create model matrix
 		// model matrix = translation x rotation x scale
-		translation = Matrix4::Translate(Cartesian3(initial_x, initial_y, initial_z + speed));
+		translation = Matrix4::Translate(Cartesian3(initial_x, initial_y, initial_z + distance));
 				//translation = Matrix4::Translate(Cartesian3(0.0f, 0.0f, s));
 		//translation = Matrix4::Translate(Cartesian3(0.0f, -s, 0.0f));  R
 		
@@ -239,7 +256,7 @@ void SceneModel::Render()
 	groundModel.Render(modelView);
 	Matrix4 p = Matrix4::Translate(Cartesian3(0.0f, -2.9f, -4.0f));
 	Matrix4 rot = Matrix4::Identity();
-	rot = Matrix4::RotateX(100.0);
+	rot = Matrix4::RotateX(110.0);
 	
 	Matrix4 mod_pla = p * rot;
 	

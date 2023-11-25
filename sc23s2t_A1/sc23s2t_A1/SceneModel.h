@@ -62,9 +62,9 @@ class SceneModel
 	Matrix4 scale;
 		
 		
-	//total speed at given time step and the facttor by wehich speed needs to be incresased
+	//speed at given time step and the distance covered since the begining of the frame
+	float distance;
 	float speed;
-	float speed_increment_factor;
 
 	//to store the total amount of rotation for yaw, pitch and roll at every time step 
 	float roll;
@@ -89,6 +89,10 @@ class SceneModel
 	void Pitch(bool clockwise);
   
   void Yaw(bool clockwise);
+  
+  void IncreaseSpeed();
+  
+  void DecreaseSpeed();
 
 	}; // class SceneModel
 /*	
