@@ -55,11 +55,13 @@ Cartesian3 RandomUnitVectorInUpwardsCone(float minimumAngle, float minimumLength
 	// loop until we get a valid result
 	while (true)
 		{ // loop until good vector
-		// get a random vector: note that we *could* have components less than
-		// minimum length, so we play safe and use 0.0 instead.  But no component
-		// may be greater than maximumLength. . . 
-		result = RandomVector(0.0, maximumLength); 
-	
+		
+		// get a random vector in a box 
+
+    // get a random vector in a box 
+
+    result = RandomVector(-maximumLength, maximumLength); 
+
 		// now get the length of the vector
 		float resultLength = result.length();
 		
