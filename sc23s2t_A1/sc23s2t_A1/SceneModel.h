@@ -34,9 +34,13 @@ class Particle
 	public:
 	
 	Matrix4 translation;
+	Matrix4 model;
 	bool isBorn;
+	bool isAive;
+	bool isDead;
 	int age;
 	int lifeSpan;
+	Cartesian3 _offset;
   };
 
 class SceneModel										
@@ -57,11 +61,11 @@ class SceneModel
 	float initial_x, initial_y, initial_z;
 	
 	//number of particles
-	int num_particles = 10;
-	
-	float g = 9.8f;
+	int num_particles;// = 10;
+	float cone_angle;
+	float g;// = 9.8f;
 	float maxAltitude; // 4500.0;
-  
+  float base_Height;
   
   std::vector<Particle> particles;
 
@@ -111,7 +115,9 @@ class SceneModel
   
   void DecreaseSpeed();
   
-  void LaunchParticles();
+  void InitializeParticles();
+  
+  Particle GetNewParticle();
 
 	}; // class SceneModel
 /*	

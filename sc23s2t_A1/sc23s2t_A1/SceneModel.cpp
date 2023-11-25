@@ -31,6 +31,44 @@ const GLfloat planeRadius = 2.0;
 const GLfloat lavaBombRadius = 100.0;
 const Cartesian3 chaseCamVector(0.0, -2.0, 0.5);
 
+Particle SceneModel::GetNewParticle()
+{
+ Particle particle;
+  
+  particle.age = -(RandomRange(0.0, 4.0));
+ 	
+ 	Cartesian3 tem = RandomUnitVectorInUpwardsCone(cone_angle, 0.0, 3.0);
+ 	float vertical = RandomRange(20.0, 50.0);
+ 	Cartesian3 _offset(tem[0], vertical, tem[1]);
+ 	
+ 	particle.translation = Matrix4::Translate(Cartesian3(-38500.0, base_Height, -4000.0));
+ 	
+ 	particle.offset = _offset;
+ 	
+ 	particle.isBorn = false;
+ 	particle.isAlive = false //check if we even need this parameter
+ 	particle.isDead = false;
+ 	
+ 	particle.age = 0;
+	maxAltitude = 4500.0; //check where 0 is?
+	particle.lifeSpan = maxAltitude / g;
+	
+	return particle;
+}
+
+void SceneModel::InitializeParticles()
+{
+
+ for(int i = 0; i < num_particles; i++)
+ {
+  Partical partical = GetNewParticle();
+ 	
+ 	particles.push_back(particle);
+ }
+ 
+} 
+
+
 // constructor
 SceneModel::SceneModel(float x, float y, float z) : initial_x(x), initial_y(y), initial_z(z)
 	{ // constructor
@@ -71,16 +109,11 @@ SceneModel::SceneModel(float x, float y, float z) : initial_x(x), initial_y(y), 
 	yaw = pitch = roll = 0.0f;
 	
 	num_particles = 10;
+	g = 9.8f;
+	base_height = 625.0f;
+	cone_angle = 45;
 	
-	for(int i = 0; i < num_particles; i++)
-	{
-		Particle particle;
-		particle.translation = Matrix4::Identity();
-		particle.isBorn = false;
-		particle.age = 0;
-		maxAltitude = 4500.0;
-		particle.lifeSpan = maxAltitude / g;
-	}
+	InitializeParticles();
 
 	} // constructor
 
@@ -168,32 +201,44 @@ Matrix4 SceneModel::lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up)
 	  
 	}
 
+
+void SceneModel::SimulateParticles()
+{
 /*
-class Paricle
-  {
-	public:
-	
 	Matrix4 translation;
+	Matrix4 model;
 	bool isBorn;
+	bool isAive;
+	bool isDead;
 	int age;
 	int lifeSpan;
-  };
-  */
-void SceneModel::LaunchParticles()
-{
- 
- for(int i; i < particles.size(); i++)
- {
-  Particle particle = particles[i];
-  
-  particle.age = -(RandomRange(0.0, 4.0));
- 	
- 	particle.translation = Matrix4::Translate(Cartesian3(-38500.0, 0.0, -4000.0));
- 	
- 	particles.push_back(particle);
- }
- 
-} 
+	caratesina3 _offset*/
+	for(int i = 0; i < particles.size(); i++)
+	{
+		//v.begin()+6 7nth element
+		Particle particle = particles[i];
+	  if(particle.isDead)
+	  {
+	  	particles[i] = GetNewParticle();
+	  	particle = particles[i];
+	  }
+	  
+	  particle.age++;
+	  
+	  if(particle.age > 0.0)
+	  {
+	  	if(particle.age < particle.lifespan)
+	  	{
+	  	
+	  		translation = translation + 	 
+	  	 
+	  	}	  	
+	  
+	  }
+	  
+	}
+	
+}
 	
 // routine that updates the scene for the next frame
 void SceneModel::Update()
