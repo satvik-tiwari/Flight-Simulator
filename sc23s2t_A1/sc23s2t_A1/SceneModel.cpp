@@ -169,7 +169,7 @@ void SceneModel::Update()
 		// model matrix = translation x rotation x scale
 		translation = Matrix4::Translate(Cartesian3(initial_x, initial_y, initial_z + distance));
 				//translation = Matrix4::Translate(Cartesian3(0.0f, 0.0f, s));
-		//translation = Matrix4::Translate(Cartesian3(0.0f, -s, 0.0f));  R
+		//translation = Matrix4::Translate(Cartesian3(0.0f, -s, 0.0f));  previous
 		
 		rotation = Matrix4::Identity();
 		
@@ -268,40 +268,4 @@ void SceneModel::Render()
 
 	} // Render()	
 	
-	
-		
-	/*Matrix4 kglm::lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up)
-	{
-	 Cartesian3 zaxis = (at - eye).unit();
-	 Cartesian3 xaxis = (zaxis.cross(up)).unit();
-	 Cartesian3 yaxis = xaxis.cross(zaxis);
-	 
-	 -zaxis; 
-	 
-	 //std::ofstream destination;
-	 //destination.open("Dump.txt");
-	 //destination << "Homogenesous coords \n" 
-	 //						<< Homogeneous4(xaxis.x, xaxis.y, xaxis.z, -xaxis.dot(eye));
-		//std::cout << "Homogeneouss coords " << Homogeneous4(xaxis.x, xaxis.y, xaxis.z, -xaxis.dot(eye));
-  Matrix4 viewMatrix;
-  viewMatrix.Identity();
-  
-	
-	
-	
-	//writing all the blocks one by one to .face file
-		
-  Homogeneous4 h0 = Homogeneous4(xaxis.x, xaxis.y, xaxis.z, -xaxis.dot(eye));
-  
-  Homogeneous4 h1 = Homogeneous4(yaxis.x, yaxis.y, yaxis.z, -yaxis.dot(eye));
-  
-  Homogeneous4 h2 = Homogeneous4(zaxis.x, zaxis.y, zaxis.z, -zaxis.dot(eye));
-  
-  Homogeneous4 h3 = Homogeneous4(0, 0, 0, 1);
-  
-  
-	viewMatrix = Matrix4::Homogeneous2Mat(h0, h1, h2, h3);
-  return viewMatrix;
-	  
-	}*/
 

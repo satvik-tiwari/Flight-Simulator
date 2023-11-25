@@ -17,7 +17,17 @@ To compile on the University Linux machines, you will need to do the following:
 
 To execute the programe:
 
-[userid@machine A1_handout]$ ./A1_handout 
+[userid@machine A1_handout]$ ./A1_handout X Y Z
+
+Y increase with alitude so, it should be positive to go up
+
+=======================================================
+
+AXES
+
+Forward is -Z
+Up is Y
+Right is X
 
 ========================================================
 
