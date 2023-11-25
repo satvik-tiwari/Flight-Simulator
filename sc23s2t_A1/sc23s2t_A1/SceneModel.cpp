@@ -199,7 +199,7 @@ void SceneModel::LaunchParticles()
 void SceneModel::Update()
 	{ // Update()
 			
-		distance = distance + speed;
+		distance = distance - speed;
 	
 		//create model matrix
 		// model matrix = translation x rotation x scale
@@ -302,6 +302,19 @@ void SceneModel::Render()
 	glMaterialfv(GL_FRONT, GL_SPECULAR, blackColour);
 	glMaterialfv(GL_FRONT, GL_EMISSION, blackColour);
 	planeModel.Render(mod_pla);
+	
+	
+	
+	//lava bombs
+	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, lavaBombColour);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, blackColour);
+	glMaterialfv(GL_FRONT, GL_EMISSION, blackColour);
+	
+	Matrix4 l = Matrix4::Translate(Cartesian3(-38500.0f, 625.0f, -4000.0f));
+	rot = Matrix4::Identity();
+	rot = Matrix4::RotateX(90.0);
+	Matrix4 mod_lava = l * modelView;
+	lavaBombModel.Render(mod_lava);
 	
 
 	} // Render()	

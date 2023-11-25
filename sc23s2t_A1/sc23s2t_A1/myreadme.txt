@@ -19,7 +19,7 @@ To execute the programe:
 
 [userid@machine A1_handout]$ ./A1_handout X Y Z
 
-Y increase with alitude so, it should be positive to go up
+Y increses with alitude so, enter Y in positve, without negative sign.
 
 =======================================================
 
@@ -46,5 +46,11 @@ Q : Quit
 + : Increse speed by 1 m/s
 - : Decrease speed by 1 m/s
 
-==================================================================
+=====================================================================
+The lava bombs are being originated at tip of volcano at (-38500.0, 625.0, -4000.0)
+
+
+
+=====================================================================
+
 

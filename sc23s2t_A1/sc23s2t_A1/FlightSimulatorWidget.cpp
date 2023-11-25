@@ -130,7 +130,7 @@ void FlightSimulatorWidget::keyPressEvent(QKeyEvent *event)
 	   	
 	  case Qt::Key_1:
 	   //set speed 1
-	   theScene->SetSpeed(1.0f);
+	   theScene->SetSpeed(40.0f);
 	   	break;	 
 
 	  case Qt::Key_2:
