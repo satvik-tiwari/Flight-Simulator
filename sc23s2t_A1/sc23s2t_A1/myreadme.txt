@@ -3,6 +3,7 @@
 # Satvik Tiwari
 # 201791342
 
+
 ================================================
 
 LINUX :
@@ -49,6 +50,81 @@ Q : Quit
 =====================================================================
 The lava bombs are being originated at tip of volcano at (-38500.0, 625.0, -4000.0)
 
+Note - particle system not working
+
+Psudo code for the same -
+
+Particle
+{
+ Matrix4 modelMatrix;
+ bool isDead;
+ float age;
+ float lifespan;
+	float delay;
+	float speed;	
+}
+
+Scene::GetNewParticle()
+{
+ //initialize the paritcle
+}
+
+Scene::Scene() //constructor
+{
+
+vector of Particle type; 
+
+//for each index in the vector GetNewParticle()
+//initialize the particles based on monte carlo distribution
+//also add a random delay
+}
+
+Update()
+{
+	for(i = 0; i < paritcles.size(); i++)
+	{
+	 if(particle reached maximum height)
+	 {
+	 	particles[i].isdead = true;
+	 	
+	 	//newParticlesEmergefromhere
+	 	
+	 }
+	 
+	 //no nedd to calculate model matrix until the dealy is over
+	 if(delay<0)
+	 {
+	  if(partilces[i].isdead)
+	  {
+	   // if a particle is dead, replace it with new one
+	    GetNewParticle()
+	  }
+		
+		speed++
+		
+		//calculate model matrix
+		
+	 }								
+		
+	
+	}
+	
+	else
+	
+	delay--
+}
+
+Render()
+{
+foreach(particle in Particles)
+{
+ if(!isDead)
+ {
+  LavaBomb.Render(paricle.modelMatrix * viewMatrixOfCamera);
+ }
+}
+
+}
 
 
 =====================================================================

@@ -31,6 +31,8 @@ const GLfloat planeRadius = 2.0;
 const GLfloat lavaBombRadius = 100.0;
 const Cartesian3 chaseCamVector(0.0, -2.0, 0.5);
 
+
+//get a new particle
 Particle SceneModel::GetNewParticle()
 {
  Particle particle;
@@ -63,6 +65,8 @@ Particle SceneModel::GetNewParticle()
 	return particle;
 }
 
+
+//iinitialize the particles
 void SceneModel::InitializeParticles()
 {
 
@@ -117,8 +121,8 @@ SceneModel::SceneModel(float x, float y, float z) : initial_x(x), initial_y(y), 
 	
 	num_particles = 10;
 	g = 9.8f;
-	base_Height = 625.0f;
-	cone_angle = 45;
+	base_Height = 625.0f; //for base height of the particle
+	cone_angle = 45; //for montecarlo
 	
 	InitializeParticles();
 
@@ -211,15 +215,7 @@ Matrix4 SceneModel::lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up)
 
 void SceneModel::SimulateParticles()
 {
-/*
-	Matrix4 translation;
-	Matrix4 model;
-	bool isBorn;
-	bool isAive;
-	bool isDead;
-	int age;
-	int lifeSpan;
-	caratesina3 _offset*/
+
 	for(int i = 0; i < particles.size(); i++)
 	{
 		//v.begin()+6 7nth element
@@ -272,13 +268,16 @@ void SceneModel::SimulateParticles()
 void SceneModel::Update()
 	{ // Update()
 			
-		distance = distance - speed;
+		distance = distance + speed;
 	
 		//create model matrix
 		// model matrix = translation x rotation x scale
 		translation = Matrix4::Translate(Cartesian3(initial_x, initial_y, initial_z + distance));
-				//translation = Matrix4::Translate(Cartesian3(0.0f, 0.0f, s));
+				
 		//translation = Matrix4::Translate(Cartesian3(0.0f, -s, 0.0f));  previous
+		
+		
+		//calculat yaw pitch roll
 		
 		rotation = Matrix4::Identity();
 		
@@ -295,7 +294,7 @@ void SceneModel::Update()
 		modelMatrix = translation * rotation * scale;
 		
 
-	//	std::cout << "Model : \n" << modelMatrix << "\n" << std::endl;
+	 //	std::cout << "Model : \n" << modelMatrix << "\n" << std::endl;
 		
 		//calculate eye, at and up for calculation of view matrix
 		Cartesian3 eye(0.0f, 0.0f, 0.0f); //-1, 0 , 0.5
@@ -309,9 +308,12 @@ void SceneModel::Update()
 		modelView = modelMatrix * viewMatrix;
 		
 	
-		//std::cout << "modelView:\n" << modelView << "\n" << std::endl;
+		
 		
 		SimulateParticles();
+		//std::cout << "modelView:\n" << modelView << "\n" << std::endl;
+		//std::cout << "heignt " << groundModel.getHeight(translation[1][3],
+		//translation[2][3]) << std::endl;
 		
 		
 	} // Update()
@@ -401,7 +403,7 @@ void SceneModel::Render()
 		{
 	  //std::cout << "lava bomb" << std::endl; 
 		Matrix4 mod_lava = particle.translation * modelView;
-		std::cout << particle.translation << "\n" << std::endl;
+		//std::cout << particle.translation << "\n" << std::endl;
 		lavaBombModel.Render(mod_lava);
 		}
 	}
