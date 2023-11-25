@@ -161,6 +161,8 @@ void SceneModel::Update()
 		Matrix4 r_pitch = Matrix4::RotateX(pitch);
 		Matrix4 r_yaw = Matrix4::RotateY(yaw);
 		rotation = r_roll * r_pitch * r_yaw * r;
+		
+		
 		scale = Matrix4::Identity();
 		
 	//	rotation = rotation * world2OpenGLMatrix;
@@ -209,8 +211,15 @@ void SceneModel::Render()
 
 	// compute the light position
 	
+	Matrix4 temp = modelView;
+	temp[0][3] = 0;
+  temp[1][3] = 0;
+	temp[2][3] = 0;
+	temp[3][3] = 1;
 		
-  	Homogeneous4 lightDirection = world2OpenGLMatrix * sunDirection;
+	Homogeneous4 lightDirection = temp * sunDirection;
+
+  //	Homogeneous4 lightDirection = world2OpenGLMatrix * sunDirection;
   	//Homogeneous4 lightDirection = modelView * sunDirection;
 	// and set the w to zero to force infinite distance
  	lightDirection.w = 0.0;
