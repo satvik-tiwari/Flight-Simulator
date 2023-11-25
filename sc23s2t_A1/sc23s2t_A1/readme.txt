@@ -1,6 +1,14 @@
 # University of Leeds 2023-24
 # COMP 5823M Assignment 1 Flight Simulator
 
+#########################################################################
+NOTE - 
+
+My readme file is named as "myreadme.txt" and it is in the same directory as this file that you are reading.
+
+########################################################################
+
+
 UNIVERSITY LINUX:
 =================
 
