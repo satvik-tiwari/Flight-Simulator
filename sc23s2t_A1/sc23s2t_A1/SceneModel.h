@@ -36,11 +36,12 @@ class Particle
 	Matrix4 translation;
 	Matrix4 model;
 	bool isBorn;
-	bool isAive;
+	bool isAlive;
 	bool isDead;
 	int age;
 	int lifeSpan;
-	Cartesian3 _offset;
+	Cartesian3 offset;
+	float count;
   };
 
 class SceneModel										
@@ -118,6 +119,8 @@ class SceneModel
   void InitializeParticles();
   
   Particle GetNewParticle();
+  
+  void SimulateParticles();
 
 	}; // class SceneModel
 /*	

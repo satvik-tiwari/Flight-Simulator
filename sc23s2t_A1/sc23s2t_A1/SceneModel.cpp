@@ -38,20 +38,27 @@ Particle SceneModel::GetNewParticle()
   particle.age = -(RandomRange(0.0, 4.0));
  	
  	Cartesian3 tem = RandomUnitVectorInUpwardsCone(cone_angle, 0.0, 3.0);
- 	float vertical = RandomRange(20.0, 50.0);
+ 	float vertical = RandomRange(0, 1);
  	Cartesian3 _offset(tem[0], vertical, tem[1]);
- 	
+ 	particle.translation = Matrix4::Identity();
  	particle.translation = Matrix4::Translate(Cartesian3(-38500.0, base_Height, -4000.0));
  	
  	particle.offset = _offset;
  	
  	particle.isBorn = false;
- 	particle.isAlive = false //check if we even need this parameter
+ 	particle.isAlive = false; //check if we even need this parameter
  	particle.isDead = false;
  	
  	particle.age = 0;
 	maxAltitude = 4500.0; //check where 0 is?
 	particle.lifeSpan = maxAltitude / g;
+	
+	particle.translation[0][3] *= particle.offset[0]; 
+	 particle.translation[1][3] *= particle.offset[1];
+	 particle.translation[2][3] *= particle.offset[2];
+	particle.count = 0;
+	//std::cout << particle.offset << "\n" <<std::endl;
+	//std::cout << particle.translation << "\n" << std::endl;
 	
 	return particle;
 }
@@ -61,7 +68,7 @@ void SceneModel::InitializeParticles()
 
  for(int i = 0; i < num_particles; i++)
  {
-  Partical partical = GetNewParticle();
+  Particle particle = GetNewParticle();
  	
  	particles.push_back(particle);
  }
@@ -110,7 +117,7 @@ SceneModel::SceneModel(float x, float y, float z) : initial_x(x), initial_y(y), 
 	
 	num_particles = 10;
 	g = 9.8f;
-	base_height = 625.0f;
+	base_Height = 625.0f;
 	cone_angle = 45;
 	
 	InitializeParticles();
@@ -216,26 +223,47 @@ void SceneModel::SimulateParticles()
 	for(int i = 0; i < particles.size(); i++)
 	{
 		//v.begin()+6 7nth element
-		Particle particle = particles[i];
-	  if(particle.isDead)
+		//Particle particle = particles[i];
+	  if(particles[i].isDead)
 	  {
-	  	particles[i] = GetNewParticle();
-	  	particle = particles[i];
+	  	//particles[i] = GetNewParticle();
+	  	//particle = particles[i];
 	  }
 	  
-	  particle.age++;
+	  /*particle.age++;
 	  
 	  if(particle.age > 0.0)
 	  {
 	  	if(particle.age < particle.lifespan)
 	  	{
 	  	
-	  		translation = translation + 	 
-	  	 
+	  		/*paraticle.translation[0][3] *= particle.offset; 
+	  	  paraticle.translation[1][3] *= particle.offset;
+	  	  paraticle.translation[2][3] *= particle.offset;
+	  	  
 	  	}	  	
 	  
-	  }
+	  }*/
+	  particles[i].count++;
+	  //std::cout << "Cpiunt " << particles[i].count << std::endl;
+	  if(particles[i].count > 0.0)
+	  {
+	  	if(particles[i].count < maxAltitude)
+	  	{
+	  		
+	  		//Matrix4 t = Matrix4::Translate(Cartesian3(0.0, 0.0, ));
+	  		particles[i].translation[1][3] += particles[i].count;
+	  		//std::cout << particle.translation << "\n" << std::endl;
+	  		particles[i].model = particles[i].translation;
+	  	}
+	  	
+	  	else
+	  	{
+	  	 //death
+	  		//particle.isDead = true;
+	  	}
 	  
+	  }
 	}
 	
 }
@@ -275,7 +303,7 @@ void SceneModel::Update()
 		Cartesian3 up(0.0f, 1.0f, 0.0f);
 		viewMatrix = lookAt(eye, at, up);
 		
-		std::cout << "View : \n" << viewMatrix << "\n" << std::endl;
+		//std::cout << "View : \n" << viewMatrix << "\n" << std::endl;
 		
 		//model view = model matrix x view matrix
 		modelView = modelMatrix * viewMatrix;
@@ -283,7 +311,7 @@ void SceneModel::Update()
 	
 		//std::cout << "modelView:\n" << modelView << "\n" << std::endl;
 		
-		
+		SimulateParticles();
 		
 		
 	} // Update()
@@ -356,10 +384,27 @@ void SceneModel::Render()
 	glMaterialfv(GL_FRONT, GL_EMISSION, blackColour);
 	
 	Matrix4 l = Matrix4::Translate(Cartesian3(-38500.0f, 625.0f, -4000.0f));
-	rot = Matrix4::Identity();
-	rot = Matrix4::RotateX(90.0);
+	//rot = Matrix4::Identity();
+	//rot = Matrix4::RotateX(90.0);
+	/*
 	Matrix4 mod_lava = l * modelView;
 	lavaBombModel.Render(mod_lava);
+	Matrix4 l1 = Matrix4::Translate(Cartesian3(-38500.0f, 670.0f, -4000.0f));
+	Matrix4 mod_lava1 = l1 * modelView;
+	lavaBombModel.Render(mod_lava1);*/
+	
+	
+	for(int i =0; i < particles.size(); i++)
+	{
+		Particle particle = particles[i];
+		if(!particle.isDead)
+		{
+	  //std::cout << "lava bomb" << std::endl; 
+		Matrix4 mod_lava = particle.translation * modelView;
+		std::cout << particle.translation << "\n" << std::endl;
+		lavaBombModel.Render(mod_lava);
+		}
+	}
 	
 
 	} // Render()	
