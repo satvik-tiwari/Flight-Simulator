@@ -61,9 +61,15 @@ class SceneModel
 	Matrix4 rotation;
 	Matrix4 scale;
 		
+		
+	//total speed at given time step and the facttor by wehich speed needs to be incresased
 	float speed;
 	float speed_increment_factor;
-	//float r = 0.0f;
+
+	//to store the total amount of rotation for yaw, pitch and roll at every time step 
+	float roll;
+	float yaw;
+	float pitch;
 	
 	// constructor
 	SceneModel(float x, float y, float z);
@@ -77,6 +83,12 @@ class SceneModel
 	void SetSpeed(float s);
 	
 	Matrix4 lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up);
+	
+	void Roll(bool clockwise);
+	
+	void Pitch(bool clockwise);
+  
+  void Yaw(bool clockwise);
 
 	}; // class SceneModel
 /*	

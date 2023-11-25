@@ -88,31 +88,36 @@ void FlightSimulatorWidget::keyPressEvent(QKeyEvent *event)
 			break;
 			
     case Qt::Key_W:
+    theScene->Yaw(false);
 	  //yaw
 	  
 	  	break;
 	  	
 	  case Qt::Key_D:
+	  theScene->Yaw(true);
 	  //yaw
 	  
 	  	break;
 	  	
 	  case Qt::Key_A:
 	  //pitch
-	  
+	  theScene->Pitch(false);
 			break;
 			
 	  case Qt::Key_S:
+	  theScene->Pitch(true);
 	  //pitch
 	  
 	  	break;
 	  	
 	  case Qt::Key_Q:
+	  theScene->Roll(false);
 	  //roll
 	  	
 	  	break;
 	  	
 	  case Qt::Key_E:
+	  theScene->Roll(true);
 	  //roll
 	  
 	  	break;

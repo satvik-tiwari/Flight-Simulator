@@ -68,6 +68,8 @@ SceneModel::SceneModel(float x, float y, float z) : initial_x(x), initial_y(y), 
 	speed = 0.0f;
 	speed_increment_factor = 0.0f;
 	
+	yaw = pitch = roll = 0.0f;
+	
 //std::cout << "asfadsfasfaefasefa   " << initial_x <<std::endl;
 	} // constructor
 
@@ -76,6 +78,37 @@ void SceneModel::SetSpeed(float s)
 {
  
  speed_increment_factor = s;
+}
+
+//increment/decrement roll angle
+void SceneModel::Roll(bool clockwise)
+{
+	if(clockwise)
+		roll--;   //check later why -- for this and ++ for the other
+		
+	else
+		roll++;
+}
+
+//increment/decrement pitch angle
+void SceneModel::Pitch(bool clockwise)
+{
+	if(clockwise)
+		pitch--;   //check later why -- for this and ++ for the other
+		
+	else
+		pitch++;
+}
+
+
+//increment/decrement yaw angle
+void SceneModel::Yaw(bool clockwise)
+{
+	if(clockwise)
+		yaw--;   //check later why -- for this and ++ for the other
+		
+	else
+		yaw++;
 }
 
 Matrix4 SceneModel::lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up)
@@ -105,7 +138,8 @@ Matrix4 SceneModel::lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up)
   return view;
 	  
 	}
-	
+
+
 	
 // routine that updates the scene for the next frame
 void SceneModel::Update()
@@ -113,14 +147,20 @@ void SceneModel::Update()
 			
 		//std::cout << "asfadsfasfaefasefa   " << initial_x <<std::endl;
 		speed = speed + speed_increment_factor;
-		
+	
 		//create model matrix
 		// model matrix = translation x rotation x scale
 		translation = Matrix4::Translate(Cartesian3(initial_x, initial_y, initial_z + speed));
 				//translation = Matrix4::Translate(Cartesian3(0.0f, 0.0f, s));
 		//translation = Matrix4::Translate(Cartesian3(0.0f, -s, 0.0f));  R
+		
 		rotation = Matrix4::Identity();
-		rotation = Matrix4::RotateX(-90.0);
+		
+		Matrix4 r = Matrix4::RotateX(-90.0);
+		Matrix4 r_roll = Matrix4::RotateZ(roll);
+		Matrix4 r_pitch = Matrix4::RotateX(pitch);
+		Matrix4 r_yaw = Matrix4::RotateY(yaw);
+		rotation = r_roll * r_pitch * r_yaw * r;
 		scale = Matrix4::Identity();
 		
 	//	rotation = rotation * world2OpenGLMatrix;
@@ -139,29 +179,7 @@ void SceneModel::Update()
 		std::cout << "View : \n" << viewMatrix << "\n" << std::endl;
 		modelView = modelMatrix * viewMatrix;
 		
-		//r+= 0.1f;
-		//Matrix4 viewMatrix;
-		//viewMatrix = camPos.transpose();
-		//viewMatrix = camPos;
-		//model matrix = translation * rotation * scale
 		
-	//	translation = Matrix4::Translate(Cartesian3(0.0f, 0.0f, s));
-	//	rotation = Matrix4::RotateY(r);
-		//scale = Matrix4::Identity();
-		//modelMatrix = translation * rotation * scale;
-		//modelMatrix = scale * rotation * translation;
-		//modelView = viewMatrix * modelMatrix;
-		//groundModel.Render(world2OpenGLMatrix);
-		//Matrix4 m = modelView * world2OpenGLMatrix;
-		//planeModel.Render(m);
-		//viewMatrix = modelMatrix.transpose();
-		
-	//	camPos = modelMatrix;
-	//	world2OpenGLMatrix = Matrix4::RotateY(s);
-	
-		
-		//world2OpenGLMatrix = Matrix4::RotateX(90.0);
-		//groundModel.Render(world2OpenGLMatrix);
 		
 		
 		std::cout << "modelView:\n" << modelView << "\n" << std::endl;
@@ -190,6 +208,8 @@ void SceneModel::Render()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// compute the light position
+	
+		
   	Homogeneous4 lightDirection = world2OpenGLMatrix * sunDirection;
   	//Homogeneous4 lightDirection = modelView * sunDirection;
 	// and set the w to zero to force infinite distance
