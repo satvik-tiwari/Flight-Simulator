@@ -70,13 +70,23 @@ SceneModel::SceneModel(float x, float y, float z) : initial_x(x), initial_y(y), 
 	
 	yaw = pitch = roll = 0.0f;
 	
-//std::cout << "asfadsfasfaefasefa   " << initial_x <<std::endl;
+	num_particles = 10;
+	
+	for(int i = 0; i < num_particles; i++)
+	{
+		Particle particle;
+		particle.translation = Matrix4::Identity();
+		particle.isBorn = false;
+		particle.age = 0;
+		maxAltitude = 4500.0;
+		particle.lifeSpan = maxAltitude / g;
+	}
+
 	} // constructor
 
 //sets the speed value to s
 void SceneModel::SetSpeed(float s)
 {
- 
  speed = s;
 }
 
@@ -128,15 +138,17 @@ void SceneModel::Yaw(bool clockwise)
 		yaw++;
 }
 
+//calculate view matrix
 Matrix4 SceneModel::lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up)
 	{
 	 
-  
+  //calculate forward
   Cartesian3 forward = (at - eye).unit();
   
+  //cross product of forward and up, gives right
   Cartesian3 right = (forward.cross(up)).unit();
   
-  //std::cout << "Right   " << right << std::endl;
+  
   
   Homogeneous4 h0 = Homogeneous4(right.x, right.y, right.z, -eye.x);
   
@@ -156,13 +168,37 @@ Matrix4 SceneModel::lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up)
 	  
 	}
 
-
+/*
+class Paricle
+  {
+	public:
+	
+	Matrix4 translation;
+	bool isBorn;
+	int age;
+	int lifeSpan;
+  };
+  */
+void SceneModel::LaunchParticles()
+{
+ 
+ for(int i; i < particles.size(); i++)
+ {
+  Particle particle = particles[i];
+  
+  particle.age = -(RandomRange(0.0, 4.0));
+ 	
+ 	particle.translation = Matrix4::Translate(Cartesian3(-38500.0, 0.0, -4000.0));
+ 	
+ 	particles.push_back(particle);
+ }
+ 
+} 
 	
 // routine that updates the scene for the next frame
 void SceneModel::Update()
 	{ // Update()
 			
-		//std::cout << "asfadsfasfaefasefa   " << initial_x <<std::endl;
 		distance = distance + speed;
 	
 		//create model matrix
@@ -182,26 +218,28 @@ void SceneModel::Update()
 		
 		scale = Matrix4::Identity();
 		
-	//	rotation = rotation * world2OpenGLMatrix;
 		
 		modelMatrix = translation * rotation * scale;
 		
+
+	//	std::cout << "Model : \n" << modelMatrix << "\n" << std::endl;
 		
-		//kglm::lookAt(Cartesian3 eye, Cartesian3 at, Cartesian3 up)
-		std::cout << "Model : \n" << modelMatrix << "\n" << std::endl;
-		
+		//calculate eye, at and up for calculation of view matrix
 		Cartesian3 eye(0.0f, 0.0f, 0.0f); //-1, 0 , 0.5
-		Cartesian3 at(0.0f, 0.0f, -1.0f);
+		Cartesian3 at(0.0f, 0.0f, -1.0f);  //i think this needs to be changed, check later
 		Cartesian3 up(0.0f, 1.0f, 0.0f);
 		viewMatrix = lookAt(eye, at, up);
 		
 		std::cout << "View : \n" << viewMatrix << "\n" << std::endl;
+		
+		//model view = model matrix x view matrix
 		modelView = modelMatrix * viewMatrix;
 		
+	
+		//std::cout << "modelView:\n" << modelView << "\n" << std::endl;
 		
 		
 		
-		std::cout << "modelView:\n" << modelView << "\n" << std::endl;
 		
 	} // Update()
 

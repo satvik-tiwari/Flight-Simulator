@@ -27,8 +27,17 @@
 #include "Matrix4.h"
 
 #include "Random.h"
+#include <vector>
 
-
+class Particle
+  {
+	public:
+	
+	Matrix4 translation;
+	bool isBorn;
+	int age;
+	int lifeSpan;
+  };
 
 class SceneModel										
 	{ // class SceneModel
@@ -47,6 +56,14 @@ class SceneModel
 	//iniital position of plane
 	float initial_x, initial_y, initial_z;
 	
+	//number of particles
+	int num_particles = 10;
+	
+	float g = 9.8f;
+	float maxAltitude; // 4500.0;
+  
+  
+  std::vector<Particle> particles;
 
 	// a matrix that specifies the mapping from world coordinates to those assumed
 	// by OpenGL
@@ -93,6 +110,8 @@ class SceneModel
   void IncreaseSpeed();
   
   void DecreaseSpeed();
+  
+  void LaunchParticles();
 
 	}; // class SceneModel
 /*	
